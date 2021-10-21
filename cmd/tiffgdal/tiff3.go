@@ -36,12 +36,12 @@ func (pb *PixelBuffer) getVec3(x int, y int) stl.Vec3 {
 
 func (pb *PixelBuffer) toSTL(x1 int, y1 int, x2 int, y2 int) stl.Solid {
 	solid := stl.Solid{}
-	for i := x1; i < x2-1; i++ {
-		for j := y1; j < y2-1; j++ {
+	for i := x1; i < x2; i++ {
+		for j := y1; j < y2; j++ {
 			tl := pb.getVec3(i, j)
-			tr := stl.Vec3{float32(i + 1), float32(j), pb.get(i, j)}
-			bl := stl.Vec3{float32(i), float32(j + 1), pb.get(i, j)}
-			br := stl.Vec3{float32(i + 1), float32(j + 1), pb.get(i, j)}
+			tr := pb.getVec3(i+1, j)
+			bl := pb.getVec3(i, j+1)
+			br := pb.getVec3(i+1, j+1)
 
 			solid.AppendTriangle(stl.Triangle{Vertices: [3]stl.Vec3{tl, bl, tr}})
 			solid.AppendTriangle(stl.Triangle{Vertices: [3]stl.Vec3{tr, bl, br}})
@@ -52,7 +52,7 @@ func (pb *PixelBuffer) toSTL(x1 int, y1 int, x2 int, y2 int) stl.Solid {
 	return solid
 }
 
-func FromGeotiff(path string) (*PixelBuffer, error) {
+func FromGeoTIFF(path string) (*PixelBuffer, error) {
 	godal.RegisterAll()
 	hDataset, err := godal.Open(path)
 	if err != nil {
@@ -72,7 +72,7 @@ func FromGeotiff(path string) (*PixelBuffer, error) {
 }
 
 func realMain() error {
-	pb, err := FromGeotiff("P_10719/DTM_SP5005_P_10719_20200315_20200315.tif")
+	pb, err := FromGeoTIFF("P_10719/DTM_SP5005_P_10719_20200315_20200315.tif")
 	if err != nil {
 		return err
 	}
