@@ -71,6 +71,35 @@ func (pb *PixelBuffer) toSTL(x1 int, y1 int, x2 int, y2 int) stl.Solid {
 		solid.AppendTriangle(stl.Triangle{Vertices: [3]stl.Vec3{tr, bl, br}})
 	}
 
+	for j := y1; j < y2; j++ {
+		// Left
+		tr := pb.getVec3(0, j+1)
+		tl := pb.getVec3(0, j)
+		br := stl.Vec3{0, float32(j + 1), 0}
+		bl := stl.Vec3{0, float32(j), 0}
+
+		solid.AppendTriangle(stl.Triangle{Vertices: [3]stl.Vec3{tl, bl, tr}})
+		solid.AppendTriangle(stl.Triangle{Vertices: [3]stl.Vec3{tr, bl, br}})
+
+		// Right
+		tl = pb.getVec3(x2, j+1)
+		tr = pb.getVec3(x2, j)
+		bl = stl.Vec3{float32(x2), float32(j + 1), 0}
+		br = stl.Vec3{float32(x2), float32(j), 0}
+
+		solid.AppendTriangle(stl.Triangle{Vertices: [3]stl.Vec3{tl, bl, tr}})
+		solid.AppendTriangle(stl.Triangle{Vertices: [3]stl.Vec3{tr, bl, br}})
+	}
+
+	// Bottom
+	tl := stl.Vec3{0, float32(y2), 0}
+	tr := stl.Vec3{float32(x2), float32(y2), 0}
+	bl := stl.Vec3{0, 0, 0}
+	br := stl.Vec3{float32(x2), 0, 0}
+
+	solid.AppendTriangle(stl.Triangle{Vertices: [3]stl.Vec3{tl, bl, tr}})
+	solid.AppendTriangle(stl.Triangle{Vertices: [3]stl.Vec3{tr, bl, br}})
+
 	solid.RecalculateNormals()
 	solid.Validate()
 	return solid
