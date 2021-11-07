@@ -1,7 +1,13 @@
 
 # Development setup
 
-    brew install gdal
+MacOS: `brew install gdal`
+Linux: `sudo apt install libgdal-dev`
+
+# Execution
+
+    go run cmd/
+
 
 # Obtaining input data
 
@@ -13,3 +19,4 @@ Downloaded data from https://environment.data.gov.uk/DefraDataDownload/?Mode=sur
 * Currently testing with DTM
 
 GeoTIFF format. Spec: http://geotiff.maptools.org/spec/contents.html
+

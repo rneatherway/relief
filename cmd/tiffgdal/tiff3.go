@@ -171,13 +171,13 @@ func (pb *PixelBuffer) ToImage() image.Image {
 	return img
 }
 
-func (pb *PixelBuffer) Zero() {
+func (pb *PixelBuffer) Zero(min float32) {
 	if len(pb.buf) == 0 {
 		return
 	}
 
 	for i := range pb.buf {
-		pb.buf[i] = pb.buf[i] - pb.Min()
+		pb.buf[i] = pb.buf[i] - pb.Min() + min
 	}
 }
 
@@ -243,7 +243,7 @@ func realMain() error {
 	w := flag.Uint("w", 0, "width (default max)")
 	h := flag.Uint("h", 0, "height (default max)")
 	s := flag.Float64("s", 1, "scale vertically (default 1)")
-	zero := flag.Bool("z", false, "use the lowest height as 'zero'")
+	zero := flag.Float64("z", 10, "translate the model down so that this is the lowest height")
 	diff := flag.String("d", "", "a second file to compare against")
 	visualize := flag.Bool("v", false, "visualize the model")
 	output := flag.String("output", "out.stl", "output STL file (default out.stl)")
@@ -281,11 +281,9 @@ func realMain() error {
 		pb.Diff(pb2)
 	}
 
-	if *zero {
-		fmt.Print("Setting minimum height value to 0...")
-		pb.Zero()
-		fmt.Println("done")
-	}
+	fmt.Printf("Setting minimum height value to %f...", *zero)
+	pb.Zero(float32(*zero))
+	fmt.Println("done")
 
 	if *s != 1.0 {
 		fmt.Printf("Adjusting vertical scale by factor of %f...", *s)
