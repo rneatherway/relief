@@ -6,8 +6,7 @@ Linux: `sudo apt install libgdal-dev`
 
 # Execution
 
-    go run cmd/
-
+    go run .
 
 # Obtaining input data
 
