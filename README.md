@@ -1,8 +1,8 @@
 
 # Development setup
 
-MacOS: `brew install gdal`
-Linux: `sudo apt install libgdal-dev`
+* MacOS: `brew install gdal`
+* Linux: `sudo apt install libgdal-dev`
 
 # Execution
 
